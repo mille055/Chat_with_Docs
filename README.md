@@ -12,7 +12,7 @@ This project is an implementation of a `Retrieval Augmented Generation`(RAG) Sys
 4. **Streawmlit Interface**: Users can then navigate to the chat section of the app, where they can ask questions and engage in dialogue with the RAG-empowered chatbot. The embedded documents serve as the context needed to generate accurate and contextually relevant responses.
 
 &nbsp;
-## Running the Application 🧨  
+## Running the Application 
 Following are the steps to run the StreamLit Application: 
 
 **1. Create a new conda environment and activate it:** 

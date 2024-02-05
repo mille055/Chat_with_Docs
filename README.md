@@ -1,4 +1,4 @@
-# Chat_with_Docs
+# Chat with Docs
 Code for a RAG from scratch that can be deployed online
 
 

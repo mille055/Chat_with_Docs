@@ -24,6 +24,7 @@ class RAG:
         self.text_dict = {}
         self.verbose = verbose
         self.initialize_database()
+        self.model = SentenceTransformer(embedding_model)
 
     def initialize_database(self):
         """
@@ -41,7 +42,6 @@ class RAG:
         )
     ''')
 
-    
         # Create the embeddings table
         cursor.execute('''
             CREATE TABLE IF NOT EXISTS embeddings (
@@ -53,6 +53,13 @@ class RAG:
 
         self.db.commit()
     
+
+    def clear_database(self):
+        # clear the database if desired by the user
+        cursor = self.db.cursor()
+        cursor.execute("DELETE FROM text_chunks")
+        cursor.execute("DELETE FROM embeddings")
+        self.db.commit()
 
     def extract_and_store_text(self, pdf_files):
         """
@@ -69,6 +76,8 @@ class RAG:
 
         # Store the chunks in the database
         self.store_chunks(chunks)
+
+        self.create_embeddings()
 
         return chunks
 
@@ -168,13 +177,24 @@ class RAG:
         rows = cursor.fetchall()
 
         for row in rows:
-            embedding = self.model.encode(row[1])
-            cursor.execute("INSERT INTO embeddings (chunk_id, embedding) VALUES (?, ?)", (row[0], embedding.tobytes()))
+            try:
+
+                raw_text = row[1]
+                cleaned_text = ''.join(char for char in raw_text if ord(char) < 128)
+                embedding = self.model.encode(cleaned_text)
+                cursor.execute("INSERT INTO embeddings (chunk_id, embedding) VALUES (?, ?)", (row[0], embedding.tobytes()))
+
+            # Rest of the code...
+            except Exception as e:
+                print(f"Error encoding text: {row[1]}")
+                print("Error message:", e)
+                continue  # Skip this row and continue with the next
 
         self.db.commit()
 
     def semantic_search(self, query):
-        query_embedding = self.model.encode(query)
+        cleaned_query = ''.join(char for char in query if ord(char) < 128)
+        query_embedding = self.model.encode(cleaned_query)
         cursor = self.db.cursor()
         cursor.execute("SELECT chunk_id, embedding FROM embeddings")
         rows = cursor.fetchall()
@@ -192,6 +212,29 @@ class RAG:
                 best_chunk = chunk_id
 
         return best_chunk
+    
+    def get_chunk_by_id(self, chunk_id):
+        """
+        Retrieves a text chunk and its reference by the chunk ID.
+
+        Args:
+            chunk_id (int): The ID of the chunk to retrieve.
+
+        Returns:
+            tuple: A tuple containing the text chunk and its reference 
+                   (PDF filename, page number).
+        """
+        cursor = self.db.cursor()
+        cursor.execute("SELECT chunk, pdf_filename, page_number FROM text_chunks WHERE id = ?", (chunk_id,))
+        result = cursor.fetchone()
+
+        if result:
+            chunk, pdf_filename, page_number = result
+            return chunk, (pdf_filename, page_number)
+        else:
+            return None, None
+
+
 
     def integrate_llm(self, prompt):
         # Use LLM to generate a response based on the prompt

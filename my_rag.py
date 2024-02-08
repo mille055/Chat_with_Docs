@@ -23,11 +23,54 @@ class RAG:
         self.cache_size = cache_size
         self.text_dict = {}
         self.verbose = verbose
+        self.initialize_database()
 
-    def extract_and_store_text(self, source):
+    def initialize_database(self):
+        """
+        Initializes the database by creating necessary tables.
+        """
+        cursor = self.db.cursor()
+
+        # Create the text_chunks table
+        cursor.execute('''
+        CREATE TABLE IF NOT EXISTS text_chunks (
+            id INTEGER PRIMARY KEY,
+            chunk TEXT NOT NULL,
+            pdf_filename TEXT NOT NULL,
+            page_number INTEGER NOT NULL
+        )
+    ''')
+
     
-        # Extract text, chunk it, and store in the database
-        pass
+        # Create the embeddings table
+        cursor.execute('''
+            CREATE TABLE IF NOT EXISTS embeddings (
+                chunk_id INTEGER NOT NULL,
+                embedding BLOB NOT NULL,
+                FOREIGN KEY (chunk_id) REFERENCES text_chunks (id)
+            )
+        ''')
+
+        self.db.commit()
+    
+
+    def extract_and_store_text(self, pdf_files):
+        """
+        Extracts text from PDF files, chunks it, and stores it in the database.
+        
+        Args:
+            pdf_files: List of PDF files to process.
+        """
+        # Extract text from PDF files
+        text_dict = self.get_text(pdf_files)
+
+        # Chunk the extracted text
+        chunks = self.chunk_text(text_dict)
+
+        # Store the chunks in the database
+        self.store_chunks(chunks)
+
+        return chunks
 
     def get_text(self, pdf_files):
         """
@@ -107,11 +150,15 @@ class RAG:
         return chunks
 
     def store_chunks(self, chunks):
-        # Store chunks in the database
         cursor = self.db.cursor()
-        for chunk in chunks:
-            # Assuming the table 'text_chunks' with columns 'id' and 'chunk'
-            cursor.execute("INSERT INTO text_chunks (chunk) VALUES (?)", (chunk,))
+        for chunk, references in chunks:
+            
+            pdf_filename, page_number = references[0]  
+            if self.verbose:
+                print("Debug: reference", pdf_filename, page_number)
+            cursor.execute("INSERT INTO text_chunks (chunk, pdf_filename, page_number) VALUES (?, ?, ?)", 
+                        (chunk, pdf_filename, page_number))
+
         self.db.commit()
 
     def create_embeddings(self):

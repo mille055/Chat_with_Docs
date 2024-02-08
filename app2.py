@@ -64,14 +64,8 @@ def run_UI():
         # Process the document after the user clicks the button
         if st.button("Process Files"):
             with st.spinner("Processing"):
-                text_dict = st_rag.get_text(pdf_files)
-
-                # Chunking the text
-                text_chunks = st_rag.chunk_text(text_dict)
-                # Display the first chunk, its corresponding page image, and the source
-                if text_chunks:
-                    chunk, references = text_chunks[0]
-                    st.write(chunk)
+                text_chunks = st_rag.extract_and_store_text(pdf_files)
+                print(text_chunks)
                     # for file_name, page_number in references:
                     #     # _, image_bytes = text_dict[(file_name, page_number)]
                         # st.image(image_bytes, caption=f"Filename: {file_name}, Page: {page_number}")

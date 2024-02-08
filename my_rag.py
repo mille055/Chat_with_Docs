@@ -29,6 +29,45 @@ class RAG:
         # Extract text, chunk it, and store in the database
         pass
 
+    def get_text(self, pdf_files):
+        """
+        Function to extract the text from one or more PDF file
+
+        Args:
+            pdf_files (files): The PDF files to extract the text from
+
+        Returns:
+            text (str): The text extracted from the PDF file
+            text_dict (dict): The text extracted for each page number 
+                with references to the source pdf and page
+        """
+        
+        text_dict = {}
+        for pdf_file in pdf_files:
+            pdf = fitz.open(stream=pdf_file.read(), filetype="pdf")
+            filename = pdf_file.name
+            if self.verbose:
+                print("Debug: processing file ", filename)
+
+            for page_num in range(len(pdf)):
+                if self.verbose:
+                    print("Debug: now on page", page_num)
+                page = pdf.load_page(page_num)
+
+                current_page_text = page.get_text().replace('\n', ' ').replace('\u2009', ' ').replace('\xa0', ' ')
+                current_page_text = ' '.join(current_page_text.split())
+
+
+                # Store the temporary file name in the dictionary
+                text_dict[(filename, page_num)] = (current_page_text)
+
+
+
+                #text_and_images_dict[(filename, page_num)] = (current_page_text, image_bytes)
+
+        return text_dict
+
+
     def chunk_text(self, text_dict):
         """
         Splits text into chunks with a specified maximum length and overlap,
@@ -48,7 +87,7 @@ class RAG:
         chunks = []
         current_chunk = ""
         current_references = []  # Stores (file_name, page_number) tuples
-        for (file_name, page_number), (text, _) in text_dict.items():
+        for (file_name, page_number), (text) in text_dict.items():
         #for (file_name, page_number), text in text_dict.items():
             sentences = re.split(r'(?<=[.!?]) +', text)
             for sentence in sentences:
@@ -83,7 +122,6 @@ class RAG:
 
         for row in rows:
             embedding = self.model.encode(row[1])
-            # Assuming the table 'embeddings' with columns 'chunk_id' and 'embedding'
             cursor.execute("INSERT INTO embeddings (chunk_id, embedding) VALUES (?, ?)", (row[0], embedding.tobytes()))
 
         self.db.commit()
@@ -109,7 +147,7 @@ class RAG:
         return best_chunk
 
     def integrate_llm(self, prompt):
-        # Use LLM (e.g., GPT-4) to generate a response based on the prompt
+        # Use LLM to generate a response based on the prompt
         pass
 
     def generate_response(self, query):
@@ -122,3 +160,24 @@ class RAG:
             return response
         else:
             return "Sorry, I couldn't find a relevant response."
+    
+    def get_page_image(self, pdf_file, page_num):
+        """
+        Extracts and returns a specific page image from a PDF file.
+
+        Args:
+            pdf_file: The PDF file to extract the image from.
+            page_num: The page number to extract the image for.
+
+        Returns:
+            BytesIO object containing the image.
+        """
+        pdf = fitz.open(stream=pdf_file.read(), filetype="pdf")
+        page = pdf.load_page(page_num)
+        page_image = page.get_pixmap()
+
+        image_bytes = io.BytesIO()
+        page_image.save(image_bytes, 'png')
+        image_bytes.seek(0)
+
+        return image_bytes

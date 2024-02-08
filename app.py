@@ -33,23 +33,32 @@ def get_text_and_images(pdf_files):
             current_page_text = ' '.join(current_page_text.split())
 
             # Rasterize the page to PNG
+            #page_image = page.get_pixmap()
+            # page_bytes: bytes = pdf[page].get_pixmap(dpi=dpi).pil_tobytes(format="PNG")
+            # pillow_image = (io.BytesIO(page_bytes))
+            
+            # Rasterize the page to PNG
             page_image = page.get_pixmap()
+            image_bytes = io.BytesIO()
+            page_image.save(image_bytes, 'png')
+            image_bytes.seek(0)
+            
             # image_bytes = io.BytesIO()
             # page_image.save(image_bytes)
             # #page_image.writePNG(image_bytes)
             # image_bytes.seek(0)
             
             # Use a temporary file to save the image
-            with tempfile.NamedTemporaryFile(suffix=".png", delete=True) as temp_image_file:
-                page_image.save(temp_image_file.name)
-                temp_image_file.seek(0)
+            # with tempfile.NamedTemporaryFile(suffix=".png", delete=True) as temp_image_file:
+            #     page_image.save(temp_image_file.name)
+            #     temp_image_file.seek(0)
 
-                # Store the temporary file name in the dictionary
-                text_and_images_dict[(filename, page_num)] = (current_page_text, temp_image_file.name)
-
-
-
+            # Store the temporary file name in the dictionary
             text_and_images_dict[(filename, page_num)] = (current_page_text, image_bytes)
+
+
+
+            #text_and_images_dict[(filename, page_num)] = (current_page_text, image_bytes)
 
     return text_and_images_dict
 
@@ -154,11 +163,14 @@ def run_UI():
         if text_chunks:
             chunk, references = text_chunks[0]
             st.write(chunk)
+            # for file_name, page_number in references:
+            #     #image = convert_page_to_image(file_name, page_number)
+            #     image = text_and_images_dict[references][1]
+            #     if image:
+            #         st.image(image, caption=f"Page {page_number} of {file_name}")
             for file_name, page_number in references:
-                image = convert_page_to_image(file_name, page_number)
-                if image:
-                    st.image(image, caption=f"Page {page_number} of {file_name}")
-
+                _, image_bytes = text_and_images_dict[(file_name, page_number)]
+                st.image(image_bytes, caption=f"Filename: {file_name}, Page: {page_number}")
     
     # Sidebar menu
     with st.sidebar:

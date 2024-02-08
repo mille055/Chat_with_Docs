@@ -2,7 +2,6 @@ import streamlit as st
 from PyPDF2 import PdfReader
 import os, re, io
 import tempfile
-#import nougat
 from pdf2image import convert_from_path
 import fitz
 from my_rag import RAG
@@ -62,9 +61,7 @@ def run_UI():
         st.write('Your question is:', query )
         best_chunk_id = st_rag.semantic_search(query)
         best_chunk, best_reference = st_rag.get_chunk_by_id(best_chunk_id)
-        # if best_chunk:
-        #     st.write('Best chunk:', best_chunk)
-        #     st.write('Source:', best_reference)
+      
         if best_chunk:
             st.write('Best chunk:', best_chunk)
             if best_reference:
@@ -75,18 +72,7 @@ def run_UI():
         else: 
             st.write('No matching text.')
 
-        # # Display the first chunk and its corresponding page image
-        # if text_chunks:
-        #     chunk, references = text_chunks[0]
-        #     st.write(chunk)
-        #     # for file_name, page_number in references:
-        #     #     #image = convert_page_to_image(file_name, page_number)
-        #     #     image = text_and_images_dict[references][1]
-        #     #     if image:
-        #     #         st.image(image, caption=f"Page {page_number} of {file_name}")
-        #     for file_name, page_number in references:
-        #         _, image_bytes = text_and_images_dict[(file_name, page_number)]
-        #         st.image(image_bytes, caption=f"Filename: {file_name}, Page: {page_number}")
+        
     
     # Sidebar menu
     with st.sidebar:

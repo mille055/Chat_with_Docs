@@ -114,9 +114,6 @@ class RAG:
                 text_dict[(filename, page_num)] = (current_page_text)
 
 
-
-                #text_and_images_dict[(filename, page_num)] = (current_page_text, image_bytes)
-
         return text_dict
 
 

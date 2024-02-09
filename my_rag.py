@@ -8,6 +8,7 @@ import fitz
 from sentence_transformers import SentenceTransformer
 import numpy as np
 import sqlite3
+import openai
 
 class RAG:
      
@@ -25,6 +26,7 @@ class RAG:
         self.verbose = verbose
         self.initialize_database()
         self.model = SentenceTransformer(embedding_model)
+        self.llm_engine = 'gpt-3.5-turbo'
 
     def initialize_database(self):
         """
@@ -234,8 +236,23 @@ class RAG:
 
 
     def integrate_llm(self, prompt):
-        # Use LLM to generate a response based on the prompt
-        pass
+        message=[{"role": "assistant", "content": "You are an expert in this content, helping to explain the text"}, {"role": "user", "content": prompt}]
+        try:
+            response = openai.chat.completions.create(
+                model='gpt-4',  
+                messages=message,
+                max_tokens=250,  
+                temperature=0.1  
+            )
+            # Extracting the content from the response
+            chat_message = response.choices[0].message
+            print(chat_message)
+            return chat_message.content
+    
+        except Exception as e:
+            print(f"Error in generating response: {e}")
+            return None
+        
 
     def generate_response(self, query):
         best_chunk_id = self.semantic_search(query)

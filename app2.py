@@ -59,16 +59,19 @@ def run_UI():
         # Call the function to generate the response
         #generate_response(user_question)
         st.write('Your question is:', query )
+        response = st_rag.generate_response(query)
         best_chunk_id = st_rag.semantic_search(query)
         best_chunk, best_reference = st_rag.get_chunk_by_id(best_chunk_id)
       
-        if best_chunk:
-            st.write('Best chunk:', best_chunk)
+        if response:
+            st.write('Response: ', response)
+            #st.write('best_chunk', best_chunk)
             if best_reference:
                 file_link = f"{best_reference[0]} (Page {best_reference[1] + 1})"
                 if st.button(f"Show source page for {file_link}"):
                     image_bytes = get_page_image(best_reference[0], best_reference[1])
                     st.image(image_bytes, caption=f"Source: {file_link}")
+                    st.write('Best chunk:', best_chunk)
         else: 
             st.write('No matching text.')
 

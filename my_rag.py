@@ -93,7 +93,6 @@ class RAG:
             pdf_files (files): The PDF files to extract the text from
 
         Returns:
-            text (str): The text extracted from the PDF file
             text_dict (dict): The text extracted for each page number 
                 with references to the source pdf and page
         """

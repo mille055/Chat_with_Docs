@@ -4,15 +4,17 @@ import os, re, io
 import tempfile
 from pdf2image import convert_from_path
 import fitz
+from collections import OrderedDict
 from my_rag import RAG
 
 OPENAI_API_KEY = os.environ["OPENAI_API_KEY"]
 pdf_storage_dir = 'data/pdfs'
-chunk_size = 500
+chunk_size = 500 # 500 characters default
 chunk_overlap = 25
+top_k = 3 # number of chunks found in semantic search
 DBPATH = 'data/db_file.db'
 model = 'all-MiniLM-L6-v2'
-st_rag = RAG(db_path = DBPATH, llm_api_key=OPENAI_API_KEY, embedding_model=model, chunk_size = chunk_size, overlap=chunk_overlap, verbose=True )
+st_rag = RAG(db_path = DBPATH, llm_api_key=OPENAI_API_KEY, embedding_model=model, chunk_size = chunk_size, overlap=chunk_overlap, top_k = top_k, verbose=True )
 
 
 #gets the image of the source page
@@ -58,24 +60,28 @@ def run_UI():
     if query:
         # Call the function to generate the response
         #generate_response(user_question)
-        st.write('Your question is:', query )
+        #st.write('Your question is:', query )
         response = st_rag.generate_response(query)
-        best_chunk_id = st_rag.semantic_search(query)
-        best_chunk, best_reference = st_rag.get_chunk_by_id(best_chunk_id)
-      
+        chunk_ids = st_rag.semantic_search(query)
+        best_chunks_and_references = st_rag.get_chunks_by_ids(chunk_ids)
+        
+
         if response:
             st.write('Response: ', response)
             #st.write('best_chunk', best_chunk)
-            if best_reference:
-                file_link = f"{best_reference[0]} (Page {best_reference[1] + 1})"
-                if st.button(f"Show source page for {file_link}"):
-                    image_bytes = get_page_image(best_reference[0], best_reference[1])
-                    st.image(image_bytes, caption=f"Source: {file_link}")
-                    st.write('Best chunk:', best_chunk)
-        else: 
+            if best_chunks_and_references:
+                index = 1 # to prevent duplicate links
+                for chunk, reference in best_chunks_and_references:
+                    # reference tuple is filename, page number
+                    file_link = f"{reference[0]} (Page {reference[1] + 1}) ({index})"
+                    if st.button(f"Show source page for {file_link}"):
+                        image_bytes = get_page_image(reference[0], reference[1])
+                        st.image(image_bytes, caption=f"Source: {file_link}")
+                        st.write('Chunk: ', chunk)
+                    index +=1 
+        else:   
             st.write('No matching text.')
 
-        
     
     # Sidebar menu
     with st.sidebar:

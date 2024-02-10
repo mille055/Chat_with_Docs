@@ -12,13 +12,14 @@ import openai
 
 class RAG:
      
-    def __init__(self, db_path, llm_api_key, embedding_model='all-MiniLM-L6-v2', chunk_size=250, overlap=25, search_threshold=0.8, max_token_length=512, cache_size=1000, verbose=False):
+    def __init__(self, db_path, llm_api_key, embedding_model='all-MiniLM-L6-v2', chunk_size=250, overlap=25, top_k = 3, search_threshold=0.8, max_token_length=512, cache_size=1000, verbose=False):
         self.db_path = db_path
         self.db = sqlite3.connect(db_path)
         self.llm_api_key = llm_api_key
         self.embedding_model = embedding_model
         self.chunk_size = chunk_size
         self.overlap = overlap
+        self.top_k = top_k
         self.search_threshold = search_threshold
         self.max_token_length = max_token_length
         self.cache_size = cache_size
@@ -79,6 +80,7 @@ class RAG:
         # Store the chunks in the database
         self.store_chunks(chunks)
 
+        # Create embeddings
         self.create_embeddings()
 
         return chunks
@@ -198,41 +200,50 @@ class RAG:
         cursor.execute("SELECT chunk_id, embedding FROM embeddings")
         rows = cursor.fetchall()
 
-        max_similarity = -1
-        best_chunk = None
+        similarities = []  # This will store the list of (chunk_id, similarity score)
 
         for row in rows:
             chunk_id = row[0]
             embedding = np.frombuffer(row[1], dtype=np.float32)
-            similarity = np.dot(query_embedding, embedding) / (np.linalg.norm(query_embedding) * np.linalg.norm(embedding))
+            sim_score = np.dot(query_embedding, embedding) / (np.linalg.norm(query_embedding) * np.linalg.norm(embedding))  # Calculate similarity score
 
-            if similarity > max_similarity:
-                max_similarity = similarity
-                best_chunk = chunk_id
+            similarities.append((chunk_id, sim_score))  # Append the tuple (chunk_id, similarity score)
 
-        return best_chunk
-    
-    def get_chunk_by_id(self, chunk_id):
+        # Sort based on similarity score
+        similarities.sort(key=lambda x: x[1], reverse=True)
+
+        # Return the top k chunk IDs
+        top_chunk_ids = [chunk_id for chunk_id, _ in similarities[:self.top_k]]
+        if self.verbose:
+            print('Semantic search returning IDs', top_chunk_ids)
+        
+        return top_chunk_ids
+        
+    def get_chunks_by_ids(self, chunk_ids):
         """
-        Retrieves a text chunk and its reference by the chunk ID.
+        Retrieves text chunks and the associated references by the chunk IDs.
 
         Args:
-            chunk_id (int): The ID of the chunk to retrieve.
+            chunk_ids (list of int): The IDs of the chunk to retrieve.
 
         Returns:
-            tuple: A tuple containing the text chunk and its reference 
+            chunks (list of tuples): A list of tuples containing the text chunk and its reference 
                    (PDF filename, page number).
         """
+        chunks = []
         cursor = self.db.cursor()
-        cursor.execute("SELECT chunk, pdf_filename, page_number FROM text_chunks WHERE id = ?", (chunk_id,))
-        result = cursor.fetchone()
+        
+        for chunk_id in chunk_ids:
+            cursor.execute("SELECT chunk, pdf_filename, page_number FROM text_chunks WHERE id = ?", (chunk_id,))
+            result = cursor.fetchone()
 
-        if result:
-            chunk, pdf_filename, page_number = result
-            return chunk, (pdf_filename, page_number)
-        else:
-            return None, None
-
+            if result:
+                chunk, pdf_filename, page_number = result
+                chunks.append((chunk, (pdf_filename, page_number)))
+                
+            else:
+                return None
+        return chunks
 
 
     def integrate_llm(self, prompt):
@@ -255,16 +266,24 @@ class RAG:
         
 
     def generate_response(self, query):
-        best_chunk_id = self.semantic_search(query)
-        if best_chunk_id is not None:
+        best_chunk_ids = self.semantic_search(query)
+        if best_chunk_ids:
+            chunks = []
             cursor = self.db.cursor()
-            cursor.execute("SELECT chunk FROM text_chunks WHERE id = ?", (best_chunk_id,))
-            best_chunk = cursor.fetchone()[0]
-            response = self.integrate_llm(best_chunk + "\n" + query)
+
+            for best_chunk_id in best_chunk_ids:
+                cursor.execute("SELECT chunk FROM text_chunks WHERE id = ?", (best_chunk_id,))
+                chunk = cursor.fetchone()
+                if chunk:
+                    chunks.append(chunk[0])
+
+            combined_chunks = " ".join(chunks)
+            response = self.integrate_llm(combined_chunks + "\n" + query)
             return response
         else:
             return "Sorry, I couldn't find a relevant response."
-    
+        
+        
     def get_page_image(self, pdf_file, page_num):
         """
         Extracts and returns a specific page image from a PDF file.

@@ -37,6 +37,7 @@ def get_page_image(pdf_filename, page_number):
         return None
 
 
+
 # main UI function
 def run_UI():
     
@@ -61,24 +62,51 @@ def run_UI():
         # Call the function to generate the response
         #generate_response(user_question)
         #st.write('Your question is:', query )
+        # get the RAG response and the references for display
         response = st_rag.generate_response(query)
         chunk_ids = st_rag.semantic_search(query)
         best_chunks_and_references = st_rag.get_chunks_by_ids(chunk_ids)
         
+        # get the GPT response from just the initial prompt and query, no chunked context
+        llm_response = st_rag.integrate_llm(query)
+        print(llm_response)
 
-        if response:
-            st.write('Response: ', response)
+        # create two columns
+        col1, col2 = st.columns(2)
+
+        with col1:
+            with st.container():
+                st.write('RAG Model Response:')
+                st.markdown('---')  # Optional: Adds a horizontal line for better separation
+                if response:
+                    st.write(response)
+                else:
+                    st.write('No matching text from RAG model.')
+
+        with col2:
+            with st.container():
+                st.write('GPT API Response:')
+                st.markdown('---')  # Optional: Adds a horizontal line for better separation
+                if llm_response:
+                    st.write(llm_response)
+                else:
+                    st.write('No matching text from GPT API.')
+
+
+
+        # if response:
+        #     st.write('Response: ', response)
             #st.write('best_chunk', best_chunk)
-            if best_chunks_and_references:
-                index = 1 # to prevent duplicate links
-                for chunk, reference in best_chunks_and_references:
-                    # reference tuple is filename, page number
-                    file_link = f"{reference[0]} (Page {reference[1] + 1}) ({index})"
-                    if st.button(f"Show source page for {file_link}"):
-                        image_bytes = get_page_image(reference[0], reference[1])
-                        st.image(image_bytes, caption=f"Source: {file_link}")
-                        st.write('Chunk: ', chunk)
-                    index +=1 
+        if best_chunks_and_references:
+            index = 1 # to prevent duplicate links
+            for chunk, reference in best_chunks_and_references:
+                # reference tuple is filename, page number
+                file_link = f"{reference[0]} (Page {reference[1] + 1}) ({index})"
+                if st.button(f"Show source page for {file_link}"):
+                    image_bytes = get_page_image(reference[0], reference[1])
+                    st.image(image_bytes, caption=f"Source: {file_link}")
+                    st.write('Chunk: ', chunk)
+                index +=1 
         else:   
             st.write('No matching text.')
 

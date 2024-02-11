@@ -45,20 +45,33 @@ def run_UI():
     st.set_page_config(page_title="Chat with Docs", layout="wide")
 
 
-    # Initialize the session state variables to store the conversations and chat history
-    if "conversations" not in st.session_state:
-        st.session_state.conversations = None
-    if "chat_history" not in st.session_state:
-        st.session_state.chat_history = None
+    # Initialize session states for RAG and GPT conversation histories
+    if 'rag_conversation' not in st.session_state:
+        st.session_state['rag_conversation'] = []
+    if 'llm_conversation' not in st.session_state:
+        st.session_state['llm_conversation'] = []
+    if 'query_input' not in st.session_state:
+        st.session_state['query_input'] = ''
 
     # Set the page title
     st.header("Chat with Docs: Interact with Your Documents")
+    st.write("This app will allow you to interact with the documents in the database. If you have not already done so, please add documents using the sidebar panel.")
+
+    # Clear conversation buttons
+    if st.button("Clear Conversation History"):
+        st.session_state['rag_conversation'] = []
+        st.session_state['llm_conversation'] = []
+        st.session_state['query_input'] = ''
+        st.rerun()
 
     # Input text box for user query
-    query = st.text_input("Ask a question")
+    #query = st.text_input("Ask a question")
+    st.session_state['query_input'] = st.text_input("Ask a question", value=st.session_state['query_input'])
+
 
     # Check if the user has entered a query/prompt
-    if query:
+    if st.session_state['query_input']:
+        query = st.session_state['query_input']
         # Call the function to generate the response
         #generate_response(user_question)
         #st.write('Your question is:', query )
@@ -80,6 +93,9 @@ def run_UI():
                 st.markdown('---')  # Optional: Adds a horizontal line for better separation
                 if response:
                     st.write(response)
+                    # Update the RAG conversation history
+                    st.session_state['rag_conversation'].append(("User", query))
+                    st.session_state['rag_conversation'].append(("RAG", response))
                 else:
                     st.write('No matching text from RAG model.')
 
@@ -89,6 +105,9 @@ def run_UI():
                 st.markdown('---')  # Optional: Adds a horizontal line for better separation
                 if llm_response:
                     st.write(llm_response)
+                    # Update the GPT conversation history
+                    st.session_state['llm_conversation'].append(("User", query))
+                    st.session_state['llm_conversation'].append(("LLM", llm_response))
                 else:
                     st.write('No matching text from GPT API.')
 
@@ -111,6 +130,7 @@ def run_UI():
             st.write('No matching text.')
 
     
+
     # Sidebar menu
     with st.sidebar:
         st.subheader("Settings")
@@ -151,6 +171,7 @@ def run_UI():
                     st.write(f"Saved {pdf_file.name} to {pdf_storage_dir}")
  
             
+st.session_state['query_input'] = ''
 
 # Application entry point
 if __name__ == "__main__":

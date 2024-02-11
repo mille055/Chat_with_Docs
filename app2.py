@@ -14,7 +14,7 @@ chunk_overlap = 25
 top_k = 3 # number of chunks found in semantic search
 DBPATH = 'data/db_file.db'
 model = 'all-MiniLM-L6-v2'
-st_rag = RAG(db_path = DBPATH, llm_api_key=OPENAI_API_KEY, embedding_model=model, chunk_size = chunk_size, overlap=chunk_overlap, top_k = top_k, verbose=True )
+st_rag = RAG(db_path = DBPATH, llm_api_key=OPENAI_API_KEY, embedding_model=model, chunk_size = chunk_size, overlap=chunk_overlap, top_k = top_k)
 
 
 #gets the image of the source page
@@ -69,7 +69,7 @@ def run_UI():
         
         # get the GPT response from just the initial prompt and query, no chunked context
         llm_response = st_rag.integrate_llm(query)
-        print(llm_response)
+        #print(llm_response)
 
         # create two columns
         col1, col2 = st.columns(2)

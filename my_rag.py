@@ -9,6 +9,7 @@ from sentence_transformers import SentenceTransformer
 import numpy as np
 import sqlite3
 import openai
+#from haystack.nodes import PreProcessor, PDFToTextConverter
 
 class RAG:
      
@@ -76,6 +77,7 @@ class RAG:
 
         # Chunk the extracted text
         chunks = self.chunk_text(text_dict)
+        #chunks = self.haystack_text_chunker(text_dict)
 
         # Store the chunks in the database
         self.store_chunks(chunks)
@@ -139,8 +141,8 @@ class RAG:
         chunks = []
         current_chunk = ""
         current_references = []  # Stores (file_name, page_number) tuples
+
         for (file_name, page_number), (text) in text_dict.items():
-        #for (file_name, page_number), text in text_dict.items():
             sentences = re.split(r'(?<=[.!?]) +', text)
             for sentence in sentences:
                 if len(current_chunk) + len(sentence) > self.chunk_size and current_chunk:
@@ -158,13 +160,47 @@ class RAG:
 
         return chunks
 
+
+    # def haystack_text_chunker(self, text_dict):
+        
+    #     processor = PreProcessor(
+    #         clean_empty_lines=True,
+    #         clean_whitespace=True,
+    #         clean_header_footer=True,
+    #         remove_substrings=None,
+    #         split_by="word",
+    #         split_length=self.chunk_size,
+    #         split_respect_sentence_boundary=True,
+    #         split_overlap=self.overlap,
+    #         add_page_number=True
+    #         )
+
+    #     if self.verbose:
+    #         print("Debug: text_dict sent to haystack", text_dict)
+
+    #     haystack_chunks = []
+
+    #     for (file_name, page_number), text in text_dict.items():
+    #         # Process each text block with the PreProcessor
+    #         processed_chunks = processor.process([{"text": text}])
+
+    #         for chunk in processed_chunks:
+    #             # Chunk is a dictionary with 'text'
+    #             current_chunk = chunk['text']
+    #             # Append chunk along with its file name and page number
+    #             haystack_chunks.append((current_chunk, [(file_name, page_number)]))
+
+    #     return haystack_chunks
+
+        
+    
     def store_chunks(self, chunks):
         cursor = self.db.cursor()
         for chunk, references in chunks:
             
             pdf_filename, page_number = references[0]  
-            if self.verbose:
-                print("Debug: reference", pdf_filename, page_number)
+            #if self.verbose:
+                #print("Debug: reference", pdf_filename, page_number)
             cursor.execute("INSERT INTO text_chunks (chunk, pdf_filename, page_number) VALUES (?, ?, ?)", 
                         (chunk, pdf_filename, page_number))
 
@@ -256,7 +292,8 @@ class RAG:
             )
             # Extracting the content from the response
             chat_message = response.choices[0].message
-            print(chat_message)
+            if self.verbose:
+                print(chat_message)
             return chat_message.content
     
         except Exception as e:

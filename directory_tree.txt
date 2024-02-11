@@ -1,0 +1,23 @@
+.
+├── README.md
+├── __pycache__
+│   └── my_rag.cpython-38.pyc
+├── app2.py
+├── assets
+│   └── empty.txt
+├── data
+│   ├── db_file.db
+│   ├── empty.txt
+│   └── pdfs
+│       ├── 1411.2738.pdf
+│       ├── Visage7_Client_OnlineHelp_EN_V11.pdf
+│       ├── Watch-and-Wait Approach to Rectal Cancer Radiology 2023.pdf
+│       └── s41586-023-06747-5.pdf
+├── dependency_tree.txt
+├── directory_tree.txt
+├── my_rag.py
+├── notebooks
+│   └── starter.ipynb
+└── requirements.txt
+
+6 directories, 15 files

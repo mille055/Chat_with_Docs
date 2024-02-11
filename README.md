@@ -26,7 +26,8 @@ pip install -r requirements.txt
 ```
 **4. Add OpenAI API Key**
 ```
-Rename the env.example file to .env and add your OpenAI API key
+- Copy the `env.example` file and rename the copy to `.env`.
+- Open the `.env` file and replace `your_api_key_here` with your actual OpenAI API key.
 ```
 **5. Run the application**
 ```

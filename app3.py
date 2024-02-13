@@ -44,7 +44,7 @@ def clear_conversation():
     st.session_state['user_queries'] = []
     st.session_state['source_pages'] = []
     st.session_state['new_query'] = ''
-    st.experimental_rerun()
+    st.rerun()
 
 # Main UI function
 def run_UI():
@@ -116,8 +116,6 @@ def run_UI():
         #st.session_state['new_query'] = ''
         st.rerun()
 
-        # Input for new query
-        #st.session_state['new_query'] = st.text_input("Ask a new question", key='new_query', value=st.session_state['new_query'])
 
     # Sidebar menu
     with st.sidebar:
@@ -159,19 +157,6 @@ def run_UI():
                     st.write(f"Saved {pdf_file.name} to {pdf_storage_dir}")
  
             
-# Initialize session states
-# if 'rag_conversation' not in st.session_state:
-#     st.session_state['rag_conversation'] = []
-# if 'llm_conversation' not in st.session_state:
-#         st.session_state['llm_conversation'] = []
-# if 'user_queries' not in st.session_state:
-#         st.session_state['user_queries'] = []
-# if 'new_query' not in st.session_state:
-#         st.session_state['new_query'] = ''
-# if 'source_pages' not in st.session_state:
-#         st.session_state['source_pages'] = []
-# if 'reset_query' not in st.session_state:
-#     st.session_state['reset_query'] = False
 
 # Application entry point
 if __name__ == "__main__":

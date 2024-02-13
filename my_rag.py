@@ -285,7 +285,7 @@ class RAG:
         message=[{"role": "assistant", "content": "You are an expert in this content, helping to explain the text"}, {"role": "user", "content": prompt}]
         try:
             response = openai.chat.completions.create(
-                model='gpt-4',  
+                model=self.llm_engine,  
                 messages=message,
                 max_tokens=250,  
                 temperature=0.1  

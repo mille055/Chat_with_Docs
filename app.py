@@ -2,18 +2,25 @@ import streamlit as st
 from PyPDF2 import PdfReader
 import os, re, io
 import tempfile
+from dotenv import load_dotenv
 from pdf2image import convert_from_path
 import fitz
 from collections import OrderedDict
 from my_rag import RAG
 
-OPENAI_API_KEY = os.environ["OPENAI_API_KEY"]
+# Load environment variables from .env file
+load_dotenv()
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+
+#OPENAI_API_KEY = os.environ["OPENAI_API_KEY"]
 pdf_storage_dir = 'data/pdfs'
 chunk_size = 500 # 500 characters default
-chunk_overlap = 25
+chunk_overlap = 25 # default
 top_k = 3 # number of chunks found in semantic search
 DBPATH = 'data/db_file.db'
 model = 'all-MiniLM-L6-v2'
+
+# instantiate RAG class
 st_rag = RAG(db_path = DBPATH, llm_api_key=OPENAI_API_KEY, embedding_model=model, chunk_size = chunk_size, overlap=chunk_overlap, top_k = top_k)
 
 

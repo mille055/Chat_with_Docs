@@ -14,6 +14,22 @@ import openai
 class RAG:
      
     def __init__(self, db_path, llm_api_key, embedding_model='all-MiniLM-L6-v2', chunk_size=250, overlap=25, top_k = 3, search_threshold=0.8, max_token_length=512, cache_size=1000, verbose=False):
+        """
+        Initializes the RAG instance with database connection and configurations.
+
+        Args:
+            db_path (str): Path to the SQLite database file.
+            llm_api_key (str): API key for OpenAI's language model.
+            embedding_model (str): Name of the sentence transformer model for embeddings.
+            chunk_size (int): Maximum length of each chunk in characters.
+            overlap (int): Number of characters to overlap between chunks.
+            top_k (int): Number of top results to retrieve in semantic search.
+            search_threshold (float): Threshold for similarity in semantic search.
+            max_token_length (int): Maximum token length for language model responses.
+            cache_size (int): Size of the cache for storing recent queries and responses.
+            verbose (bool): Flag to enable verbose logging for debugging.
+        """
+       
         self.db_path = db_path
         self.db = sqlite3.connect(db_path)
         self.llm_api_key = llm_api_key
@@ -32,7 +48,7 @@ class RAG:
 
     def initialize_database(self):
         """
-        Initializes the database by creating necessary tables.
+        Creates necessary tables in the SQLite database if they don't already exist.
         """
         cursor = self.db.cursor()
 
@@ -59,7 +75,9 @@ class RAG:
     
 
     def clear_database(self):
-        # clear the database if desired by the user
+        """
+        Clears all data from the text_chunks and embeddings tables in the database.
+        """
         cursor = self.db.cursor()
         cursor.execute("DELETE FROM text_chunks")
         cursor.execute("DELETE FROM embeddings")
@@ -72,6 +90,7 @@ class RAG:
         Args:
             pdf_files: List of PDF files to process.
         """
+
         # Extract text from PDF files
         text_dict = self.get_text(pdf_files)
 
@@ -195,6 +214,13 @@ class RAG:
         
     
     def store_chunks(self, chunks):
+        """
+        Stores the processed text chunks in the database.
+
+        Args:
+            chunks (List[Tuple[str, Tuple[str, int]]]): List of text chunks with references.
+        """
+        
         cursor = self.db.cursor()
         for chunk, references in chunks:
             
@@ -207,7 +233,9 @@ class RAG:
         self.db.commit()
 
     def create_embeddings(self):
-        # Create embeddings for each chunk and store them
+        """
+        Creates embeddings for each chunk stored in the database using the sentence transformer model.
+        """
         cursor = self.db.cursor()
         cursor.execute("SELECT id, chunk FROM text_chunks")
         rows = cursor.fetchall()
@@ -229,6 +257,15 @@ class RAG:
         self.db.commit()
 
     def semantic_search(self, query):
+        """
+        Performs semantic search to find the most relevant text chunks for a given query.
+
+        Args:
+            query (str): User's query string.
+
+        Returns:
+            List[int]: List of chunk IDs representing the top search results.
+        """
         cleaned_query = ''.join(char for char in query if ord(char) < 128)
         query_embedding = self.model.encode(cleaned_query)
         cursor = self.db.cursor()
@@ -282,6 +319,16 @@ class RAG:
 
 
     def integrate_llm(self, prompt):
+        """
+        Generates a response using a large language model based on the given prompt.
+
+        Args:
+            prompt (str): Prompt string including context and query for the language model.
+
+        Returns:
+            str: The generated response from the language model.
+        """
+        
         message=[{"role": "assistant", "content": "You are an expert in this content, helping to explain the text"}, {"role": "user", "content": prompt}]
         try:
             response = openai.chat.completions.create(
@@ -302,6 +349,16 @@ class RAG:
         
 
     def generate_response(self, query):
+        """
+        Generates a response to a given query using semantic search and large language model integration.
+
+        Args:
+            query (str): The query string for which a response is required.
+
+        Returns:
+            str: Generated response to the query.
+        """
+        
         best_chunk_ids = self.semantic_search(query)
         if best_chunk_ids:
             chunks = []

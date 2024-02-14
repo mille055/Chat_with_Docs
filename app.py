@@ -46,54 +46,40 @@ def get_page_image(pdf_filename, page_number):
 
 # Clear the conversation, removing the history
 def clear_conversation():
-    st.session_state['rag_conversation'] = []
-    st.session_state['llm_conversation'] = []
-    st.session_state['user_queries'] = []
-    st.session_state['source_pages'] = []
+    st.session_state['conversation_history'] = []
     st.session_state['new_query'] = ''
     st.rerun()
 
 # Main UI function
 def run_UI():
     st.set_page_config(page_title="Chat with Docs", layout="wide")
-
-    # Initialize session states
-    if 'rag_conversation' not in st.session_state:
-        st.session_state['rag_conversation'] = []
-    if 'llm_conversation' not in st.session_state:
-        st.session_state['llm_conversation'] = []
-    if 'user_queries' not in st.session_state:
-        st.session_state['user_queries'] = []
-    if 'new_query' not in st.session_state:
-        st.session_state['new_query'] = ''
-    if 'source_pages' not in st.session_state:
-        st.session_state['source_pages'] = []
-
-
     st.header("Chat with Docs: Interact with Your Documents")
     st.write("This app will allow you to interact with the documents in the database. If you have not already done so, please add documents using the sidebar panel.")
+
+
+    # Initialize session states
+    # Assuming each item in conversation_history is a dictionary with keys:
+    # 'query', 'rag_response', 'llm_response', 'source_pages'   
+    if 'conversation_history' not in st.session_state:
+        st.session_state['conversation_history'] = []
+
 
     # Clear conversation button
     if st.button("Clear Conversation"):
         clear_conversation()
 
     # Display the conversation history
-    for i, (user_text, rag_response, gpt_response, source_pages) in enumerate(zip(
-            st.session_state['user_queries'],
-            st.session_state['rag_conversation'],
-            st.session_state['llm_conversation'],
-            st.session_state['source_pages'])):
-
-        st.text_area(f"Question {i+1}", value=user_text, height=75, disabled=True)
-
+    # Display the conversation history
+    for i, convo in enumerate(st.session_state['conversation_history']):
+        st.text_area(f"Question {i+1}", value=convo['query'], height=75, disabled=True)
         col1, col2 = st.columns(2)
         with col1:
-            st.text_area(f"RAG Response {i+1}", value=rag_response, height=250, disabled=True)
+            st.text_area(f"RAG Response {i+1}", value=convo['rag_response'], height=250, disabled=True)
         with col2:
-            st.text_area(f"LLM Response {i+1}", value=gpt_response, height=250, disabled=True)
-
+            st.text_area(f"LLM Response {i+1}", value=convo['llm_response'], height=250, disabled=True)
+        
         # Show source page buttons
-        for j, (pdf_filename, page_number) in enumerate(source_pages):
+        for j, (pdf_filename, page_number) in enumerate(convo['source_pages']):
             if st.button(f"Show source for Q{i+1} - File {pdf_filename} - Page {page_number + 1}", key=f'source_button_{i}_{j}'):
                 image_bytes = get_page_image(pdf_filename, page_number)
                 st.image(image_bytes, caption=f"Source: {pdf_filename} (Page {page_number + 1})")
@@ -101,23 +87,32 @@ def run_UI():
         st.markdown("---")  # Horizontal line
 
     # Input and button for new query
-    new_query = st.text_input("Ask a question", key='new_query', value=st.session_state['new_query'])
+    new_query = st.text_input("Ask a question", key='new_query')
     
-     # Check for Submit button press
-    submit_button_pressed = st.button("Submit")
 
-    if submit_button_pressed and st.session_state['new_query']:
-        response = st_rag.generate_response(new_query)
-        llm_response = st_rag.integrate_llm(new_query)
+    # On submitting a new query
+    if st.button("Submit") and new_query:
+        # Concatenate previous conversation with new query
+        full_conversation = '\n'.join([item['query'] + '\n' + item['rag_response'] for item in st.session_state['conversation_history']])
+        full_conversation += '\nQ: ' + new_query
+
+        # Generate responses
+        rag_response = 'A: ' + st_rag.generate_response(full_conversation)
+        llm_response = 'A: ' + st_rag.integrate_llm(full_conversation)
+        print(full_conversation)
+
         # Get info for the source page display
         chunk_ids = st_rag.semantic_search(new_query)
         best_chunks_and_references = st_rag.get_chunks_by_ids(chunk_ids)
         current_source_pages = [(ref[0], ref[1]) for _, ref in best_chunks_and_references]
 
-        st.session_state['user_queries'].append(new_query)
-        st.session_state['rag_conversation'].append(response)
-        st.session_state['llm_conversation'].append(llm_response)
-        st.session_state['source_pages'].append(current_source_pages)
+        #Update conversation history
+        st.session_state['conversation_history'].append({
+        'query': 'Q: ' + new_query,
+        'rag_response': rag_response,
+        'llm_response': llm_response,
+        'source_pages': current_source_pages
+    })
 
         # Clear the input field and rerun
         #st.session_state['new_query'] = ''

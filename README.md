@@ -45,7 +45,7 @@ streamlit run app.py
 │   └── my_rag.cpython-38.pyc
 ├── app.py
 ├── assets
-│   └── empty.txt
+│   └── robot-image.png
 ├── data
 │   ├── db_file.db
 │   ├── empty.txt
@@ -62,3 +62,4 @@ streamlit run app.py
 └── requirements.txt
 
 6 directories, 16 files
+

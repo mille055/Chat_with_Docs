@@ -2,7 +2,7 @@
 
 This project is an implementation of a `Retrieval Augmented Generation`(RAG) System. It leverages the API from OpenAI to create an interactive chat experience with any PDF you provide.  
 
-![chatbot image](./assets/walle_image3.png)
+![chatbot image](./assets/walle_image3)
 
 ## How It Works
 

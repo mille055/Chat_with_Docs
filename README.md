@@ -36,3 +36,26 @@ streamlit run app.py
 ## Directory Structure
 
 ```
+├── Dockerfile
+├── README.md
+├── __pycache__
+│   └── my_rag.cpython-38.pyc
+├── app.py
+├── assets
+│   └── empty.txt
+├── data
+│   ├── db_file.db
+│   ├── empty.txt
+│   └── pdfs
+│       ├── 1411.2738.pdf
+│       ├── Visage7_Client_OnlineHelp_EN_V11.pdf
+│       ├── Watch-and-Wait Approach to Rectal Cancer Radiology 2023.pdf
+│       └── s41586-023-06747-5.pdf
+├── directory_tree.txt
+├── env.example
+├── my_rag.py
+├── notebooks
+│   └── starter.ipynb
+└── requirements.txt
+
+6 directories, 16 files

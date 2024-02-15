@@ -2,12 +2,15 @@
 
 This project is an implementation of a `Retrieval Augmented Generation`(RAG) System. It leverages the API from OpenAI to create an interactive chat experience with any PDF you provide.  
 
+![chatbot image](./assets/walle_image3.png)
+
 ## How It Works
 
 1. **Upload Your Documents**: Users can upload one or more PDF(s) directly into the Streamlit app. 
 2. **Text Preparation**: Once uploaded, the app extracts the text from the document(s) and splits into chunks. There are settings related to chunk size and overlap for newly imported documents. 
 3. **Embedding and Indexing**: The chunked text is then embedded using OpenAI embeddings and saved to a SQLite database. 
-4. **Streawmlit Interface**: Users can then navigate to the chat section of the app, where they can ask questions and engage in dialogue with the RAG-empowered chatbot. The embedded documents serve as the context needed to generate accurate and contextually relevant responses. The 
+4. **Streawmlit Interface**: Users can then navigate to the chat section of the app, where they can ask questions and engage in dialogue with the RAG-empowered chatbot. The embedded documents serve as the context needed to generate accurate and contextually relevant responses. There are two columns, the one on the left for the RAG-empowered chatbot, and the one on the right to show a direct call to the GPT API for responses for comparison.
+
 
 &nbsp;
 ## Running the Application 

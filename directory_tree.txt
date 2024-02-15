@@ -1,8 +1,9 @@
 .
+├── Dockerfile
 ├── README.md
 ├── __pycache__
 │   └── my_rag.cpython-38.pyc
-├── app2.py
+├── app.py
 ├── assets
 │   └── empty.txt
 ├── data
@@ -13,11 +14,11 @@
 │       ├── Visage7_Client_OnlineHelp_EN_V11.pdf
 │       ├── Watch-and-Wait Approach to Rectal Cancer Radiology 2023.pdf
 │       └── s41586-023-06747-5.pdf
-├── dependency_tree.txt
 ├── directory_tree.txt
+├── env.example
 ├── my_rag.py
 ├── notebooks
 │   └── starter.ipynb
 └── requirements.txt
 
-6 directories, 15 files
+6 directories, 16 files

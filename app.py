@@ -99,7 +99,7 @@ def run_UI():
         # Generate responses
         rag_response = 'A: ' + st_rag.generate_response(full_conversation)
         llm_response = 'A: ' + st_rag.integrate_llm(full_conversation)
-        print(full_conversation)
+        #print(full_conversation)
 
         # Get info for the source page display
         chunk_ids = st_rag.semantic_search(new_query)

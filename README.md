@@ -1,6 +1,6 @@
 # Chat with Docs
 
-This project is an implementation of a *Retrieval Augmented Generation* (RAG) System. It leverages the API from OpenAI to create an interactive chat experience with any PDF you provide.  
+This project is an implementation of a *Retrieval Augmented Generation* (RAG) System. It leverages a RAG from scratch with an SQLite vector database and the API from OpenAI to create an interactive chat experience with any PDF you provide.  
 
 ![chatbot image](./assets/robot-image.png)
 

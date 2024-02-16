@@ -9,7 +9,7 @@ nougat-ocr==0.1.17
 num2words==0.5.13
 numpy==1.24.4
 openai==1.11.1
-opencv-python-headless==4.9.0.80
+#opencv-python-headless==4.9.0.80
 pandas==2.0.3
 pdf2image==1.17.0
 pillow==10.2.0

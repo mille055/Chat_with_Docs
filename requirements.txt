@@ -39,4 +39,6 @@ url-normalize==1.4.3
 urllib3==2.2.0
 watchdog==4.0.0
 python-dotenv==1.0.1
+azure-identity
+azure-keyvault-secrets
 

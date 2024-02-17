@@ -6,11 +6,37 @@ from dotenv import load_dotenv
 from pdf2image import convert_from_path
 import fitz
 from collections import OrderedDict
+from azure.identity import DefaultAzureCredential
+from azure.keyvault.secrets import SecretClient
+# import my custom rag class
 from my_rag import RAG
 
-# Load environment variables from .env file
-load_dotenv()
+# for deployment on azure
+def load_from_key_vault(secret_name):
+    from azure.identity import DefaultAzureCredential
+    from azure.keyvault.secrets import SecretClient
+
+    key_vault_name = 'cmmvault'
+    KVUri = f"https://{key_vault_name}.vault.azure.net"
+    
+    credential = DefaultAzureCredential()
+    client = SecretClient(vault_url=KVUri, credential=credential)
+
+    retrieved_secret = client.get_secret(secret_name)
+    return retrieved_secret.value
+
+
+# Attempt to load OPENAI_API_KEY from environment variable
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+
+# If not found, try loading from .env file
+if not OPENAI_API_KEY:
+    load_dotenv()
+    OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
+
+    # If still not found, try loading from Azure Key Vault
+    if not OPENAI_API_KEY:
+        OPENAI_API_KEY = load_from_key_vault('openai')
 
 #OPENAI_API_KEY = os.environ["OPENAI_API_KEY"]
 pdf_storage_dir = 'data/pdfs'

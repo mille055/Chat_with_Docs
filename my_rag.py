@@ -13,7 +13,7 @@ import openai
 
 class RAG:
      
-    def __init__(self, db_path, llm_api_key, embedding_model='all-MiniLM-L6-v2', chunk_size=250, overlap=25, top_k = 3, search_threshold=0.8, max_token_length=512, cache_size=1000, verbose=False):
+    def __init__(self, db_path, llm_api_key, embedding_model='all-MiniLM-L6-v2', llm_engine = 'gpt-3.5-turbo', chunk_size=250, overlap=25, top_k = 3, search_threshold=0.8, max_token_length=512, cache_size=1000, verbose=False):
         """
         Initializes the RAG instance with database connection and configurations.
 
@@ -42,9 +42,9 @@ class RAG:
         self.cache_size = cache_size
         self.text_dict = {}
         self.verbose = verbose
-        self.initialize_database()
         self.model = SentenceTransformer(embedding_model)
-        self.llm_engine = 'gpt-3.5-turbo'
+        self.llm_engine = llm_engine
+        self.initialize_database()
 
     def initialize_database(self):
         """
@@ -179,37 +179,38 @@ class RAG:
 
         return chunks
 
-
+    # Note: tried to use haystack but messed up dependencies with pydantic so
+    # could not even try to test this code
     # def haystack_text_chunker(self, text_dict):
         
-    #     processor = PreProcessor(
-    #         clean_empty_lines=True,
-    #         clean_whitespace=True,
-    #         clean_header_footer=True,
-    #         remove_substrings=None,
-    #         split_by="word",
-    #         split_length=self.chunk_size,
-    #         split_respect_sentence_boundary=True,
-    #         split_overlap=self.overlap,
-    #         add_page_number=True
-    #         )
+    #      processor = PreProcessor(
+    #          clean_empty_lines=True,
+    #          clean_whitespace=True,
+    #          clean_header_footer=True,
+    #          remove_substrings=None,
+    #          split_by="word",
+    #          split_length=self.chunk_size,
+    #          split_respect_sentence_boundary=True,
+    #          split_overlap=self.overlap,
+    #          add_page_number=True
+    #          )
 
-    #     if self.verbose:
-    #         print("Debug: text_dict sent to haystack", text_dict)
+    #      if self.verbose:
+    #          print("Debug: text_dict sent to haystack", text_dict)
 
-    #     haystack_chunks = []
+    #      haystack_chunks = []
 
-    #     for (file_name, page_number), text in text_dict.items():
-    #         # Process each text block with the PreProcessor
-    #         processed_chunks = processor.process([{"text": text}])
+    #      for (file_name, page_number), text in text_dict.items():
+    #          # Process each text block with the PreProcessor
+    #          processed_chunks = processor.process([{"text": text}])
 
-    #         for chunk in processed_chunks:
-    #             # Chunk is a dictionary with 'text'
-    #             current_chunk = chunk['text']
-    #             # Append chunk along with its file name and page number
-    #             haystack_chunks.append((current_chunk, [(file_name, page_number)]))
+    #          for chunk in processed_chunks:
+    #              # Chunk is a dictionary with 'text'
+    #              current_chunk = chunk['text']
+    #              # Append chunk along with its file name and page number
+    #              haystack_chunks.append((current_chunk, [(file_name, page_number)]))
 
-    #     return haystack_chunks
+    #      return haystack_chunks
 
         
     

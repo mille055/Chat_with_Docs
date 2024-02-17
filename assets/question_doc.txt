@@ -1,0 +1,259 @@
+Q: Where do I change my monitor configuration settings?
+A: To adjust the windows that allow for viewing within the Visage 7 client, navigate to
+the upper left-hand corner and choose File > Preferences> Monitor Configuration.
+This will allow you to customize your monitors for viewing, displaying the study
+browser, study navigator, and export.
+
+Q: Where do I change my monitor configuration settings for viewing on a Visage 7 client?
+A: To adjust the windows that allow for viewing within the Visage 7 client, navigate to
+the upper left-hand corner and choose File > Preferences> Monitor Configuration.
+This will allow you to customize your monitors for viewing, displaying the study
+browser, study navigator, and export.
+
+Q: How do I access priors for a patient?
+A: Patient priors can be accessed from the Study Navigator, or from the Thumbnail Browser at
+the bottom of the viewer.
+
+Q: How do I access priors for a patient using Visage7?
+A: Patient priors can be accessed from the Study Navigator, or from the Thumbnail Browser at
+the bottom of the viewer.
+
+Q: How can I customize my toolbar?
+A: You can right click in the empty space in the toolbar area and uncheck toolbars that
+you do not want or check toolbars that are not currently shown. To save these changes,
+right-click in an empty space in the toolbar section and select �Save Toolbar Settings�. Note
+that the settings will be saved for that protocol only.
+
+Q: How can I customize my toolbar using Visage7?
+A: You can right click in the empty space in the toolbar area and uncheck toolbars that
+you do not want or check toolbars that are not currently shown. To save these changes,
+right-click in an empty space in the toolbar section and select �Save Toolbar Settings�. Note
+that the settings will be saved for that protocol only.
+
+Q:  What is a protocol? How do I change the protocol?
+A: The protocol on a Visage 7 client refers not only to the display of data, but also
+incorporates the tools that will be available by default in the toolbar, certain window-levels
+which may be applied to viewports, and whether the linking of datasets is enabled by
+default. You will have more than one option for the loaded protocol. Navigate to the top
+left of the screen and click on �Protocol�, then choose a different protocol to load if
+needed.
+
+Q:  What is a protocol on Visage7? How do I change the protocol?
+A: The protocol on a Visage 7 client refers not only to the display of data, but also
+incorporates the tools that will be available by default in the toolbar, certain window-levels
+which may be applied to viewports, and whether the linking of datasets is enabled by
+default. You will have more than one option for the loaded protocol. Navigate to the top
+left of the screen and click on �Protocol�, then choose a different protocol to load if
+needed.
+
+Q: What is a layout? How do I change layouts?
+A: A layout dictates the way images are displayed in the viewer. They are configured as part of
+the hanging protocol. The user can change layouts by clicking on a different layout from the
+layout toolbar. They can also be re-arranged by clicking and dragging them to a more
+prominent place within the layout toolbar.
+
+Q: How do I add to default layouts?
+A: The function of �Add to Default Layouts� allows the user to quickly set a different layout as
+their preference to load into next time they open up a similar exam. The system will
+remember the last added default layout. Anytime a change is made to the layout menu (setting a default, hiding, adding, or re- arranging any layout), the user must right click again on any layout and hit �Save Layout Preferences� for the changes to apply. Remember changes apply only to the Protocol they were done for.
+
+Q: How do I create Keyboard shortcuts and map the keyboard shortcuts to a gaming mouse?
+A: Select CNTRL+K to open the "Configure Keyboard Shortcuts Dialogue". A user can map a tool to a letter or combination of keys to create a keyboard shortcut and/or map specific
+keys to a gaming mouse via the mouse GUI.
+
+Q: How do I create Keyboard shortcuts and map the keyboard shortcuts to a gaming mouse using Visage7?
+A: Select CNTRL+K to open the "Configure Keyboard Shortcuts Dialogue". A user can map a tool to a letter or combination of keys to create a keyboard shortcut and/or map specific
+keys to a gaming mouse via the mouse GUI.
+
+Q: How do I link the series for a current study?
+A: Some protocols may link series within a study automatically upon loading. When series are
+not linked, there are a few different ways they can be linked. You can use the linking tools
+in the toolbar, selecting as the first option the �Automatically Link Viewers� button.
+
+Q: How do I link the series for a current study using Visage7?
+A: Some protocols may link series within a study automatically upon loading. When series are
+not linked, there are a few different ways they can be linked. You can use the linking tools
+in the toolbar, selecting as the first option the �Automatically Link Viewers� button.
+
+Q: How do I know which series are being displayed and if I have viewed all images?
+A: There are various indicators in the lower-right hand corners of the thumbnails that will
+differ depending on the data.
+
+Q: How is volumetric data displayed?
+A: Volumetric data is shown with a single cube in the lower left corner of the thumbnail. This
+means the thumbnail contains a single volume. For volumetric data, a green border around a thumbnail indicates that this image set is currently shown in the active viewer. Click a thumbnail with a green border to highlight the active viewer briefly.A green triangle in the lover right corner of a thumbnail indicates that this dataset is shown in one of the viewers on the screen.
+A grey triangle in the lover right corner indicates that this dataset had been displayed in a
+viewer at some point but has since been unloaded.
+
+Q: Can a user set a preference of "Show warning if not all images have been viewed"
+for the system to notify a user when all images in a study have not been viewed upon
+closing the current session?
+A: There is a tool called �Show Unseen Images Warning� that can be manually triggered at any
+time via tool palette or applying it to a keyboard shortcut.This warning would include all images in the study, including localizers and non-diagnostic series such as calibration images.
+
+Q: Once I make changes to my user profile will I have to set those features up again or will it save?
+A: Specific user preferences (W/L presets, Keyboard Shortcuts, and Tool Palate) will be saved
+to the user profile and always follow the user, regardless of the workstation they are using.
+Changes in font and icon sizes are stored for monitors of approximately the same size as
+the monitor where this change was made. The only configurations that will NOT follow the
+user to different workstations are monitor configuration. Monitor configuration changes
+will need to be set up once per workstation.
+
+Q: How do I change the W/L presets and create custom W/L presets?
+A: Select File>Preferences>Window/Level Presets or select Window/Level Presets from the
+viewer controls (in bottom left-hand corner of viewport). Custom W/L presets can be
+chosen for the modality for which you want to define a preset and a preset number. Preset numbers correspond to the NUMERIC (0-9) keyboard shortcuts that you can use to
+select presets quickly while you are reading images. W/L presets cannot be mapped to
+alphabetic letters.
+
+Q: How do I change the W/L presets and create custom W/L presets using Visage7?
+A: Select File>Preferences>Window/Level Presets or select Window/Level Presets from the
+viewer controls (in bottom left-hand corner of viewport). Custom W/L presets can be
+chosen for the modality for which you want to define a preset and a preset number. Preset numbers correspond to the NUMERIC (0-9) keyboard shortcuts that you can use to
+select presets quickly while you are reading images. W/L presets cannot be mapped to
+alphabetic letters.
+
+Q: How do I configure my tool palette?
+A: Select File>Preferences>Tool Palette. In the search filter box above the Available Tools list,
+type the name or part of the name of the tool that you are looking for or scroll through the
+list to find the desired tool. Select a tool and drag it onto the Tool Palette to the right. Please note that moving a tool to a box that is already occupied by another tool will replace that tool. Select whether to show the tool palette, the viewer context menu, or both when you right-
+click a viewer.
+
+Q: How do I configure my tool palette using Visage7?
+A: Select File>Preferences>Tool Palette. In the search filter box above the Available Tools list,
+type the name or part of the name of the tool that you are looking for or scroll through the
+list to find the desired tool. Select a tool and drag it onto the Tool Palette to the right. Please note that moving a tool to a box that is already occupied by another tool will replace that tool. Select whether to show the tool palette, the viewer context menu, or both when you right-
+click a viewer.
+
+Q: How do I restore system defaults for the tool palette? 
+A: Click the �Revert to System Defaults� button to reject any recent or previous assignments
+or reassignments. Click OK to confirm and close the dialog box.If you want to remove a tool, right click on it in the grid and select "Remove"
+
+Q: How do I restore system defaults for the tool palette using Visage7? 
+A: Click the "Revert to System Defaults" button to reject any recent or previous assignments
+or reassignments. Click OK to confirm and close the dialog box.If you want to remove a tool, right click on it in the grid and select "Remove"
+
+Q: How can I find a patient that I viewed/interpreted earlier today?
+A: A user can find recently opened studies from the study browser, by clicking the �Recent
+Studies� tab. If this is not shown, click the �+� sign next to the Visage tab, and select
+"Recent Studies".
+
+Q: How can I hide the toolbar?
+A: By clicking View>Auto Hide>Hide Toolbar.
+
+Q: How can I hide the toolbar using Visage7?
+A: By clicking View>Auto Hide>Hide Toolbar.
+
+Q: Can I change the viewer text color?
+A: Yes, by going to File>Preferences>Properties> �Text and Line Color for Prior Studies�.
+Similar preferences exist for current and future studies as well.
+
+Q: How do I change font, toolbar, or thumbnail sizes?
+A: By holding CNTRL + scrolling the scroll wheel while hovering over viewer text, toolbar, or
+thumbnails. Scroll the mouse wheel up to increase text size and scroll down to decrease
+text size.
+
+Q: How do I know if there are any additional studies in the archive?
+A: If there are additional studies in an archive, Visage will prompt the user with a blue
+hyperlink at the bottom of the study navigator which reads �Load additional studies from
+Archive�. After clicking on the hyperlink, the user will have an option to import them to the
+Visage cache from the archive.
+
+Q: What is the red folder icon in the corner of each viewer?
+A: The red folder icon provides a user with the access to the list of the series of all currently
+loaded studies.
+
+Q: How do I turn off the patient information if it is covering the anatomy?
+A: Hit the space bar to toggle through the levels of verbosity, or you can use the �Toggle
+Patient/Study data� tool.
+
+Q: How do I anonymize images?
+A: The space bar is a quick way to hide DICOM overlays including patient demographics.
+Toggle patient/study data tool hides patient demographics while preserving other overlays,
+such as annotations and measurements, and crosshairs. Privacy mode can be enabled via File > privacy mode to hide patient data but preserve the
+overlays of technical factors.  De-identify from study browser if you need to create fully de-identified copy of the study.
+
+Q: How do I anonymize images using Visage7?
+A: The space bar is a quick way to hide DICOM overlays including patient demographics.
+Toggle patient/study data tool hides patient demographics while preserving other overlays,
+such as annotations and measurements, and crosshairs. Privacy mode can be enabled via File > privacy mode to hide patient data but preserve the
+overlays of technical factors.  De-identify from study browser if you need to create fully de-identified copy of the study.
+
+Q: Can I export images to a JPEG?
+A: Screenshot > Save > Export as JPEG/PNG to folder.
+
+Q: Can I export images to a JPEG using Visage7?
+A: Screenshot > Save > Export as JPEG/PNG to folder.
+
+
+Q: What is the difference between saving presentation states and secondary captures?
+A: Presentation state is a way to save attributes such as W/L, Rotate/Flip, and
+annotations/measurements so that the study loads that way the next time someone loads
+the study. Unlike the secondary captures, the Presentation State features can be applied
+interactively � for example, the annotations may be hidden with a single click.  A secondary capture is a snapshot of a viewer or of multiple viewers. When creating the
+snapshot, Visage captures exact pixels that are displayed to the user, including not only the
+image(s) but also all text and graphic overlays. When such an image is displayed, the text
+and graphics cannot be interactively hidden since a separate DICOM series will be saved as
+a secondary capture.
+
+Q: Who do I call to arrange a Vascular Interventional Procedure during the day?
+A: Call the Interventional Radiology pager at 970-7930.
+
+Q: Who do I call to arrange a solid organ biopsy procedure at 3 p.m.?
+A: Call the Body Interventional pager at 206-3465 or the Body reading room at 684-7224.
+
+Q: Who do I call to arrange a drain placement after hours?
+A: Call the senior call cell phone at 681-4422.
+
+Q: What is the contrast allergy prep for a study and how long does it take?
+A: The Greenberger 13-hour steroid prep is to pretreat patients with a history of mild to moderate contrast allergies.
+It consists of 50 mg Prednisone orally 13 hours, 7 hours, and 1 hour before the procedure and 50 mg Benedryl IV 1 hour before the study. 
+
+Q: What is the Greenberger protocol for contrast allergy prep?
+A: The Greenberger 13-hour steroid prep is to pretreat patients with a history of mild to moderate contrast allergies.
+It consists of 50 mg Prednisone orally 13 hours, 7 hours, and 1 hour before the procedure and 50 mg Benedryl IV 1 hour before the study. 
+
+Q: What is the emergency contrast allergy prep and what is given?
+A: Solumedrol 60mg IV IV 4hrs prior to exam, and another dose right before exam. Benadryl 25-50mg IV 1 hr prior to exam per radiologist.
+
+Q: Who do I contact for a Pediatric Fluoro study? 
+A: CONTACT & HOURS: 684-7288 7:30 am to 5:00 pm Mon-Fri and 7:30 am to 12:00 pm on the weekend. Emergent after hours studies available by calling Radiology Junior Call phone (681-4475)
+
+Q: Who do I contact for Intracranial aneurysm embolization?
+A: Neurovascular IR is staffed by neurosurgery, and can be reached at the functional pager 970-2671. Neurovascular interventions include:
+
+Q: Does Vascular Interventional Radiology (VIR) place the PICC lines?
+A: VIR does not place PICC lines (contact PICC team), and generally does not place or pull inpatient non-tunneled central lines (contact medical procedure team).
+
+Q: Who do I contact for CT guided thoracentesis?
+A: CONTACT & HOURS Routinely available 7:30 am to 5:00 pm Mon-Fri by calling the CTI reading room (684-7419). If emergent intervention is required outside of these hours, please call the Radiology Senior Call phone (681-4422).
+
+Q: What types of procedures does VIR (Vascular Interventional Radiology) perform?
+A: Tunneled central lines (placements and bedside removals)
+Visceral and pulmonary arteriograms and intervention
+Percutaneous GTube / GJ Tube / J Tubes
+Percutaneous nephrostomy / biliary / cholecystostomy tubes (PCNs, PBDs, PercCholes)
+IVC filter placements and removals
+AVF / AVG fistulagrams and interventions
+Solid organ tumor ablations and embolizations
+Vertebral kyphoplasty and sacroplasty
+Venous and arterial malformation percutaneous treatment
+Of note, VIR does not place PICC lines (contact PICC team), and generally does not place or pull inpatient non-tunneled central lines (contact medical procedure team).
+
+Q: How do I assign a study label to a study?
+A: 1. In the study list, right-click a study and select Study Labels.
+2. Type the new label name.
+Visage 7 now offers you two versions of the new label, new label (private) and 
+new label (public).
+3. Select the check box in front of the public or private version and click Apply.
+Visage 7 creates the new label and assigns the selected study to it.
+4. Assign a second label to the study, if required
+
+Q: How do I assign a study label to a study using Visage7?
+A: 1. In the study list, right-click a study and select Study Labels.
+2. Type the new label name.
+Visage 7 now offers you two versions of the new label, new label (private) and 
+new label (public).
+3. Select the check box in front of the public or private version and click Apply.
+Visage 7 creates the new label and assigns the selected study to it.
+4. Assign a second label to the study, if required

@@ -2,15 +2,21 @@
 ├── Dockerfile
 ├── README.md
 ├── __pycache__
-│   └── my_rag.cpython-38.pyc
+│   ├── my_rag.cpython-38.pyc
+│   └── my_rag.cpython-39.pyc
 ├── app.py
 ├── assets
+│   ├── output_file.txt
+│   ├── output_file2.txt
+│   ├── question_doc.txt
 │   └── robot-image.png
 ├── data
 │   ├── db_file.db
 │   ├── empty.txt
 │   └── pdfs
 │       ├── 1411.2738.pdf
+│       ├── I need a procedure - DukeRads.pdf
+│       ├── Manual on MR Safety.pdf
 │       ├── Visage7_Client_OnlineHelp_EN_V11.pdf
 │       ├── Watch-and-Wait Approach to Rectal Cancer Radiology 2023.pdf
 │       └── s41586-023-06747-5.pdf
@@ -18,7 +24,8 @@
 ├── env.example
 ├── my_rag.py
 ├── notebooks
+│   ├── process_question_list.ipynb
 │   └── starter.ipynb
 └── requirements.txt
 
-6 directories, 16 files
+6 directories, 23 files
